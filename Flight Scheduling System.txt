@@ -82,11 +82,11 @@ BEGIN
     WHERE flight_id = p_flight_id;
 
     IF v_available_seats > 0 THEN
-        -- Proceed with the booking
+        
         INSERT INTO bookings (booking_id, flight_id, passenger_id, seat_number)
         VALUES (seq_booking_id.NEXTVAL, p_flight_id, p_passenger_id, p_seat_number);
 
-        -- Update available seats in the flight
+       
         UPDATE flights
         SET available_seats = available_seats - 1
         WHERE flight_id = p_flight_id;
