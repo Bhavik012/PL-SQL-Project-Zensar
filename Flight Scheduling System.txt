@@ -1,4 +1,4 @@
-
+-- Create Table for Flight Information
 CREATE TABLE flights (
     flight_id NUMBER PRIMARY KEY,
     flight_number VARCHAR2(10) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE flights (
     status VARCHAR2(20) DEFAULT 'Scheduled'
 );
 
-
+-- Create Table for Passenger Information
 CREATE TABLE passengers (
     passenger_id NUMBER PRIMARY KEY,
     passenger_name VARCHAR2(100) NOT NULL,
@@ -18,6 +18,7 @@ CREATE TABLE passengers (
     passenger_phone VARCHAR2(15)
 );
 
+-- Create Table for Bookings
 CREATE TABLE bookings (
     booking_id NUMBER PRIMARY KEY,
     flight_id NUMBER,
@@ -28,6 +29,7 @@ CREATE TABLE bookings (
     FOREIGN KEY (passenger_id) REFERENCES passengers(passenger_id)
 );
 
+-- Create Table for Flight Status
 CREATE TABLE flight_status (
     flight_id NUMBER PRIMARY KEY,
     status VARCHAR2(20),
@@ -35,12 +37,12 @@ CREATE TABLE flight_status (
     FOREIGN KEY (flight_id) REFERENCES flights(flight_id)
 );
 
-
+-- Create Sequences for Auto-incrementing IDs
 CREATE SEQUENCE seq_flight_id START WITH 1 INCREMENT BY 1 NOCACHE;
 CREATE SEQUENCE seq_passenger_id START WITH 1 INCREMENT BY 1 NOCACHE;
 CREATE SEQUENCE seq_booking_id START WITH 1 INCREMENT BY 1 NOCACHE;
 
-
+-- Procedure to Add a New Flight
 CREATE OR REPLACE PROCEDURE add_flight (
     p_flight_number IN VARCHAR2,
     p_departure_city IN VARCHAR2,
@@ -56,6 +58,7 @@ BEGIN
 END add_flight;
 /
 
+-- Procedure to Add a New Passenger
 CREATE OR REPLACE PROCEDURE add_passenger (
     p_passenger_name IN VARCHAR2,
     p_passenger_email IN VARCHAR2,
@@ -68,7 +71,7 @@ BEGIN
 END add_passenger;
 /
 
-
+-- Procedure to Book a Flight
 CREATE OR REPLACE PROCEDURE book_flight (
     p_passenger_id IN NUMBER,
     p_flight_id IN NUMBER,
@@ -82,11 +85,11 @@ BEGIN
     WHERE flight_id = p_flight_id;
 
     IF v_available_seats > 0 THEN
-        
+        -- Proceed with the booking
         INSERT INTO bookings (booking_id, flight_id, passenger_id, seat_number)
         VALUES (seq_booking_id.NEXTVAL, p_flight_id, p_passenger_id, p_seat_number);
 
-       
+        -- Update available seats in the flight
         UPDATE flights
         SET available_seats = available_seats - 1
         WHERE flight_id = p_flight_id;
@@ -99,7 +102,7 @@ BEGIN
 END book_flight;
 /
 
-
+-- Procedure to Update Flight Status
 CREATE OR REPLACE PROCEDURE update_flight_status (
     p_flight_id IN NUMBER,
     p_status IN VARCHAR2
@@ -111,7 +114,7 @@ BEGIN
 END update_flight_status;
 /
 
-
+-- Procedure to View All Flights
 CREATE OR REPLACE PROCEDURE view_flights IS
 BEGIN
     FOR flight_rec IN (SELECT * FROM flights) LOOP
@@ -120,7 +123,7 @@ BEGIN
 END view_flights;
 /
 
-
+-- Procedure to View All Passengers
 CREATE OR REPLACE PROCEDURE view_passengers IS
 BEGIN
     FOR passenger_rec IN (SELECT * FROM passengers) LOOP
@@ -129,7 +132,7 @@ BEGIN
 END view_passengers;
 /
 
-
+-- Procedure to View Bookings for a Flight
 CREATE OR REPLACE PROCEDURE view_bookings_for_flight (
     p_flight_id IN NUMBER
 ) IS
@@ -140,7 +143,7 @@ BEGIN
 END view_bookings_for_flight;
 /
 
-
+-- Procedure to View Flight Status
 CREATE OR REPLACE PROCEDURE view_flight_status (
     p_flight_id IN NUMBER
 ) IS
@@ -151,7 +154,7 @@ BEGIN
 END view_flight_status;
 /
 
-
+-- Procedure to View Bookings for a Passenger
 CREATE OR REPLACE PROCEDURE view_bookings_for_passenger (
     p_passenger_id IN NUMBER
 ) IS
@@ -162,35 +165,35 @@ BEGIN
 END view_bookings_for_passenger;
 /
 
-
+-- Example of adding flights
 BEGIN
     add_flight('AI202', 'New York', 'London', TO_DATE('2025-01-10 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2025-01-10 18:00:00', 'YYYY-MM-DD HH24:MI:SS'), 100);
     add_flight('BA305', 'London', 'Paris', TO_DATE('2025-02-05 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2025-02-05 10:30:00', 'YYYY-MM-DD HH24:MI:SS'), 150);
 END;
 /
 
-
+-- Example of adding passengers
 BEGIN
     add_passenger('John Doe', 'john.doe@example.com', '1234567890');
     add_passenger('Jane Smith', 'jane.smith@example.com', '9876543210');
 END;
 /
 
-
+-- Example of making bookings
 BEGIN
     book_flight(1, 1, 1); -- John Doe books seat 1 on flight AI202
     book_flight(2, 2, 2); -- Jane Smith books seat 2 on flight BA305
 END;
 /
 
-
+-- Example of updating flight status
 BEGIN
     update_flight_status(1, 'Delayed');
     update_flight_status(2, 'Completed');
 END;
 /
 
-
+-- Example of viewing flights, passengers, bookings, and status
 BEGIN
     view_flights;
     view_passengers;
