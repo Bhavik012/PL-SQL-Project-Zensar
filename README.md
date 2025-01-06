@@ -1,7 +1,7 @@
 # Flight Scheduling System
 
 ## Developer
-**[Patil Bhavik Deepak]**  
+**Patil Bhavik Deepak**  
 Student of **Amrutvahini College of Engineering**  
 **T.E Computer Engineering Department** (under [Relevant Training Program, if applicable])  
 
