@@ -3,7 +3,7 @@
 ## Developer
 **Patil Bhavik Deepak **  
 Student of **Amrutvahini College of Engineering**  
-**T.E Computer Engineering Department** (under [Relevant Training Program, if applicable])  
+**T.E Computer Engineering Department**
 
 ---
 
@@ -67,5 +67,5 @@ Special thanks for the mentorship and support throughout the project development
 
 ---
 
-## License
-This project is developed for academic purposes and is not intended for commercial use.
+## under guidance :-
+Anirudha Gaikwad sir
